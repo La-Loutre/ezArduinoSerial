@@ -13,5 +13,8 @@ int main(int argc,char **argv)
     write(1,buffer,nb*sizeof(char));
     }*/
   linkWithArduino("/dev/ttyACM0",9600);
+  /*TODO
+    Mettre en place 2 pipe pour que l'on puisse ecrire depuis ce processus dans un pipe que linkWith arduino renverra au arduino et un autre pipe dans lequel on pourra lire et qui contiendra les réponse du arduino ( récupéré depuis le arduino et mises dans le pipe depuis le processus linkWithArduino ) .
+   */
   while(1);
 }

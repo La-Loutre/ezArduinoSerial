@@ -71,6 +71,15 @@ static void addToBuffer(char *b1,char *b2,int size)
     b1[i]=b2[i];
 
 }
+void delinkArduino(int childPid)
+{
+  /**
+     xxx
+   */
+
+  kill(childPid,9);
+  waitpid(childPid,NULL);
+}
 /**
    Create an interface between an arduino and the 
    'main' process ( process calling this function ).
@@ -140,11 +149,15 @@ int linkWithArduino(char *path,int bitrate,int *input,int *output)
 
 	    }
 	    write(readFromInterface[1],bigbufferReception,sizeof(char)*bigNbReception);
+	    if(DEBUG_EZ_ARDUINO==1){
+	      	    write(2,bigbufferReception,sizeof(char)*bigNbReception);
+
+	    }
 	    bigNbReception=0;
 
 	  }
 	perror(strerror(errno));
-	exit(0);
+	exit(1);
 	
 	//Pipe closed implicitly there
 

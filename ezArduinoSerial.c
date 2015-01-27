@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #define DEFAULT_TIME_OUT 200
+
 struct ezArduinoSerial{
   int fd;
 };
@@ -71,7 +72,12 @@ void writeToEzArduino(EzArduinoSerial this,char *msg)
    arduino .
    -output will contain the file descriptor (O_RDONLY|O_APPEND) associated with 
    arduino .
-   -return the pid of the interface.
+   -return the pid of the interface.(dont forget to kill him before leaving !!)
+   
+   Current limitation :
+   -output can BLOCK because it's a pipe . Therefore if the arduino is not sending information , read will BLOCK indefinitly . You can change this by using fcntl(output,O_NONBLOCK) .
+   -MAX_ARDUINO_BUFFER should be used to read from input and to write to output.
+   However you can redefine MAX_ARDUINO_BUFFER size before including ezArduino.h
    
  */
 static void addToBuffer(char *b1,char *b2,int size)

@@ -130,13 +130,13 @@ int linkWithArduino(char *path,int bitrate,int *input,int *output)
 	    while((nbReception=readFromArduino(fd,bufferReception,sizeof(char)*100))>0){
 	      addToBuffer(bigbufferReception+bigNbReception,bufferReception,nbReception);
 	      bigNbReception+=nbReception;
-	      
-	      //	      fprintf(stderr,"FIN");
+
 	    }
 	    write(readFromInterface[1],bigbufferReception,sizeof(char)*bigNbReception);
-	    //	    fprintf(stderr,"FINTEST");
+	    bigNbReception=0;
+
 	  }
-	//	printf(strerror(errno));
+
 
 	}
 	//Pipe closed implicitly there

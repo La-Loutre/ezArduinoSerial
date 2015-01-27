@@ -64,6 +64,13 @@ void writeToEzArduino(EzArduinoSerial this,char *msg)
   
 
 }
+static void addToBuffer(char *b1,char *b2,int size)
+{
+  int i;
+  for(i=0;i<size;i++)
+    b1[i]=b2[i];
+
+}
 /**
    Create an interface between an arduino and the 
    'main' process ( process calling this function ).
@@ -80,13 +87,7 @@ void writeToEzArduino(EzArduinoSerial this,char *msg)
    However you can redefine MAX_ARDUINO_BUFFER size before including ezArduino.h
    
  */
-static void addToBuffer(char *b1,char *b2,int size)
-{
-  int i;
-  for(i=0;i<size;i++)
-    b1[i]=b2[i];
 
-}
 int linkWithArduino(char *path,int bitrate,int *input,int *output)
 {
 
@@ -118,7 +119,7 @@ int linkWithArduino(char *path,int bitrate,int *input,int *output)
   if((pidfils=fork())==0)
     {
       /**
-	'main' process pipes closed 
+	'main' process's pipes closed 
        */
       close(writeToInterface[1]);
       close(readFromInterface[0]);
@@ -129,7 +130,7 @@ int linkWithArduino(char *path,int bitrate,int *input,int *output)
 	char bufferReception[100];
 	int nbReception=0;
 	int bigNbReception=0;
-	while(1){
+	
 	while((n=read(writeToInterface[0],buffer,sizeof(char)*100))>0)
 	  {
 	    write(fd2,buffer,sizeof(char)*n);
@@ -142,13 +143,15 @@ int linkWithArduino(char *path,int bitrate,int *input,int *output)
 	    bigNbReception=0;
 
 	  }
-
-
-	}
-	//Pipe closed implicitly there
+	perror(strerror(errno));
 	exit(0);
+	
+	//Pipe closed implicitly there
+
     }
-  
+  /*
+    'interface' process's pipes closed
+   */
   close(writeToInterface[0]);
   close(readFromInterface[1]);
   *input=writeToInterface[1];

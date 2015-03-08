@@ -1,5 +1,7 @@
+CFLAGS=-g
 all:testEzArduinoSerial autoLinkWith
-
+	cp ezArduinoSerial.h ../../include
+	ar -cr ../../lib/libezArduinoSerial.a ezArduinoSerial.o
 autoLinkWith: autoLinkWith.o ezArduinoSerial.o
 
 testEzArduinoSerial : testEzArduinoSerial.o ezArduinoSerial.o

@@ -21,7 +21,8 @@ int main(int argc,char **argv)
    //	 write(1,buffer,sizeof(char)*readFromArduino);
    //    }
    //   delinkArduino(childPid);
-   printf("test");
+   char *txt="azertyuiop";
+   write(1,&txt,strlen(txt));
    char buffer[1000];
    read(0,&buffer,sizeof(char)*1000);
    fprintf(stderr,"%s",buffer);

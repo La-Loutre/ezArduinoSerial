@@ -10,7 +10,7 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <errno.h>
-#define DEFAULT_TIME_OUT 200
+#define DEFAULT_TIME_OUT 800
 
 struct ezArduinoSerial{
   int fd;
@@ -135,11 +135,13 @@ int linkWithArduino(char *path,int bitrate,int *input,int *output)
       
       int n;
 	char buffer[100];
-	char bigbufferReception[1000];
+	char bigbufferReception[MAX_ARDUINO_BUFFER];
 	char bufferReception[100];
 	int nbReception=0;
 	int bigNbReception=0;
-	
+	/*XXX
+	  For now there is a bug because you must write to this process before having something to read .
+	 */
 	while((n=read(writeToInterface[0],buffer,sizeof(char)*100))>0)
 	  {
 	    write(fd2,buffer,sizeof(char)*n);
